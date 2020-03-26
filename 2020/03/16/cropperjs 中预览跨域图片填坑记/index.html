@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="A blog about font-end and life">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="nearwmy">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="cropperjs 中预览跨域图片填坑记">
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="A blog about font-end and life">
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="I&#39;m near">
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article">
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://nearwmy.github.io/img/home-bg.jpg">
+    
+
+        <meta name="twitter:card" content="summary_large_image">
+
+    
+
+    
+        <meta name="twitter:image" content="https://nearwmy.github.io/img/home-bg.jpg">
+    
+
+    <!-- Title -->
+    
+    <title>cropperjs 中预览跨域图片填坑记 - I&#39;m near</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Near</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/fontend">
+                            
+                                FontEnd
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/life">
+                            
+                                Life
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories/movie">
+                            
+                                Movie
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/about">
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://nearwmy.github.io">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>cropperjs 中预览跨域图片填坑记</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by near on
+                        
+                        
+                            2020-03-16
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/cropperjs/">#cropperjs</a> <a href="/tags/cors/">#cors</a> <a href="/tags/no-cros/">#no-cros</a> <a href="/tags/img/">#img</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                        
+
+<a href="/categories/fontend/">fontend</a>
+
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h3 id="问题概述"><a href="#问题概述" class="headerlink" title="问题概述"></a>问题概述</h3><p>前几天业务中发现了个不同系统内查看同一个图片资源有的会出现图片加载失败的情况，乍一看像是出现跨域问题了，其实不然。这问题涉及比较多细节，今天在这里整理一下。</p>
+<hr>
+<h4 id="强制缓存和协商缓存"><a href="#强制缓存和协商缓存" class="headerlink" title="强制缓存和协商缓存"></a>强制缓存和协商缓存</h4><p><strong>强制缓存标识头</strong>：Cache-Control / Expires, Cache-Control<br>优先级比 Expires 高,如果命中了强缓存，status code 依然是 200，不过会标识 from xxx cache</p>
+<p><strong>协商缓存标识头</strong>：【Last-Modified，If-Modified-Since】/【ETag、If-None-Match】<br>如果命中协商缓存，status code 会返回 304 并标识 Not Modified</p>
+<p>图片都是存储在 s3 上的，图片地址并没有做重定向处理，所以到了前端获取到的地址是一个第三方资源地址，根据 s3资源请求返回的响应头的缓存标识，cache-control 为 no-cache， 同时返回了 Last-Modified / Etag,  所以在强缓存被命中的情况下，不会再次向服务器发起请求。这是导致以上问题的原因之一</p>
+<p><img src="/img/cache.png" alt="cache"></p>
+<hr>
+<h4 id="条件型-cors-响应和无条件型-cors-响应"><a href="#条件型-cors-响应和无条件型-cors-响应" class="headerlink" title="条件型 cors 响应和无条件型 cors 响应"></a>条件型 cors 响应和无条件型 cors 响应</h4><p><strong>条件型 cros</strong>: </p>
+<ul>
+<li>根据有无 origin 头，来确定是否返回 Access-Control-Allow-Origin</li>
+<li>根据不同的 origin，返回不同 Access-Control-Allow-Origin  值</li>
+</ul>
+<p><strong>无条件型 cros</strong>： 将 Access-Control-Allow-Origin  固定写死为 * ，允许任意网站访问</p>
+<p>上面说到，因为是第三方资源请求，涉及到跨域请求，所以服务在响应的时候会返回 Access-Control-Allow-Origin 头部标识，值为 当前 origin，在没有 origin 的时候，则不返回此字段。但是如果内部不同系统（ origin 不同的情况下）去请求同一个资源地址时，因为资源地址相同，所以会命中强制缓存，这时就会出现缓存错乱的情况，因为缓存的 header 上 跨域头 Access-Control-Allow-Origin 并不是当 origin，这时控制台会报错图片加载失败。</p>
+<p>这个问题其实官方文档 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS" target="_blank" rel="noopener">MDN-HTTP访问控制（CORS）</a> 已经给出了解决方案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例如： Access-Control-Allow-Origin: http://mozilla.com</span><br><span class="line"></span><br><span class="line">如果服务端指定了具体的域名而非“*”，那么响应首部中的 Vary 字段的值必须包含 Origin。这将告诉客户端：服务器对不同的源站返回不同的内容。</span><br></pre></td></tr></table></figure>
+<p>在响应首部加上： Vary: Origin, 让同一个 url，在不同系统中有不同的缓存</p>
+<p>以上方法可以解决加载图片的问题，但是这样做之后，依然有一个问题：上传图片的时候使用了 cropperjs 去裁切，编辑头像进行裁剪的时候当前图片依然加载失败的问题，倒不是因为图片跨域不能加载，而是 cropperjs 在解决图片跨域加载会命中缓存导致加载的失败的情况下，给图片 url 添加了 timestamp 参数，每次去重新请求，s3 服务是对所有参数做了校验的，所以单独加参数会导致验证失败。</p>
+<p>这里可能会疑问不就是再次请求图片吗？为什么会加载失败？ 这里和服务端集成 s3，设计缓存策略有关，确实应该在 304 的时候依然返回跨域头，但是并没有，现在想通过其他的方式看能不能紧急解决这个问题。到这里其实问题已经很清楚了，就是没有在正确的请求中响应跨域头，最后我们只能在 nginx 这层将  Access-Control-Allow-Origin 重写为 *， 然后返回给前端来解决。</p>
+<hr>
+<h4 id="Http-首部出现重复字段怎么办"><a href="#Http-首部出现重复字段怎么办" class="headerlink" title="Http 首部出现重复字段怎么办"></a>Http 首部出现重复字段怎么办</h4><p>配置 nginx 期间，由于 s3 本身有下发 Access-Control-Allow-* 相关头部，nginx 只能 add_header 操作字段，所以出现了重复的字段，根据 HTTP RFC 2616规定，是可以出现多个重复字段的，不过并没有明确规定出现重复字段时浏览器应该如何处理，所以每个浏览器内部实现逻辑可能不一致，有的以第一次出现的为准，有的以最后出现的为准，chrome 上试了下，好像是以最后出现的字段值为准。</p>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=A blog about font-end and life"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr>
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://nearwmy.github.io" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 nearwmy<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <!-- <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'nearwmy';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+</body>
+
+</html>
