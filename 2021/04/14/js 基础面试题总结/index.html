@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content>
+  <meta name="author" content="nearwmy">
+  <meta name="description" content="A blog about font-end and life">
+  
+  
+  <title>
+    
+      js 基础面试题总结 
+      
+      
+      |
+    
+     I&#39;m near
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  <script src="/js/fancybox.js"></script>
+
+  
+
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+<script src="/js/activeNav.js"></script>
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">js 基础面试题总结</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2021-04-14 03:43:00
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/fontend/" title="fontend">
+                    <b>#</b> fontend
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/js基础/" title="js基础">
+                    <b>#</b> js基础
+                  </a>
+                </span>
+                
+                <span class="span--tag">
+                  <a href="/tags/前端面试题/" title="前端面试题">
+                    <b>#</b> 前端面试题
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <!-- [值传递和值引用](#value)
+[对 this 对象的理解](#this)
+[隐式转换](#transform)
+[事件循环， 宏任务，微任务](#eventLoop)
+[提升（hoisting）](#hoisting)
+[作用域](#scope)
+[正则表达式](#reg)
+[object 的 key值的类型转换](#keys)
+[js 原生方法](#methods) -->
+<h3 id="value"> 值传递和值引用 </h3>
+
+<p>js 数据类型分为 基本类型和引用类型</p>
+<p>基本类型： Number Boolean String Undefined Null Symbol<br>引用类型： Object Function Array Date RegExp Math 其他类 object 的实例对象</p>
+<p>基本类型的存储方式： 变量和值都在栈内存中<br>引用类型的存储方式： 变量名存储在栈内存中，值存储在堆内存中，堆内存中会提供一个引用地址指向堆内存中的值，而这个引用地址是储存在栈内存中的。</p>
+<ol>
+<li><p>打印以下结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function changeObjProperty(o) &#123;</span><br><span class="line">  o.siteUrl = &quot;http://www.baidu.com&quot;</span><br><span class="line">  o = new Object()</span><br><span class="line">  o.siteUrl = &quot;http://www.google.com&quot;</span><br><span class="line">&#125; </span><br><span class="line">let webSite = new Object();</span><br><span class="line">changeObjProperty(webSite);</span><br><span class="line">console.log(webSite.siteUrl);</span><br><span class="line">&lt;!-- 原因：changeObjProperty 的参数是变量的引用, new Object 是创建了一个新对象，对外面的 webSite 不产生影响 --&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查对象类型</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. typeof </span><br><span class="line">2. instanceof</span><br><span class="line">3. Object.prototype.toString.call(args) // 可检查所有对象类型</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li><p>深拷贝 &amp; 浅拷贝  </p>
+<pre><code>这里的拷贝要区别于赋值操作， 对基本类型数据的赋值操作是值传递，对引用类型的数据的赋值操作是引用传递，而浅拷贝是新创建了对象，对第一层数据进行复制，子对象的话则是引用传递
+</code></pre><p> 浅拷贝：创建新对象，对第一层属性进行赋值，子对象的话依然是引用传递<br> 深拷贝：创建新对象，对对象和子对象进行完全的复制，被拷贝对象发生任何变化不会影响到新对象</p>
+<p>举例说明赋值和浅拷贝的区别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">  name: &apos;near&apos;,</span><br><span class="line">  age: 18,</span><br><span class="line">  language: &#123;</span><br><span class="line">    value: &apos;zh&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var obj2 = obj</span><br><span class="line">var obj3 = copy(obj)</span><br><span class="line"></span><br><span class="line">// 浅拷贝</span><br><span class="line">function copy(obj) &#123;</span><br><span class="line">  let newObj = &#123;&#125;</span><br><span class="line">  for(let key in obj) &#123;</span><br><span class="line">    if (obj.hasOwnProperty(key)) &#123;</span><br><span class="line">      newObj[key] = obj[key]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return newObj</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.name = &apos;Lisa&apos;</span><br><span class="line">console.log(obj2.name) // &apos;Lisa&apos; 值引用，指向同一块内存地址，所以会同步改变</span><br><span class="line">console.log(obj3.name) // &apos;near&apos; 第一层基本数据类型是值传递</span><br><span class="line"></span><br><span class="line">obj.language.value = &apos;en&apos;</span><br><span class="line">console.log(obj2.language.value) // &apos;en&apos; 子对象是值引用，所以会互相影响</span><br><span class="line">console.log(obj3.language.value) // &apos;en&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5>常见的浅拷贝</h5>
+
+<ol>
+<li><p>直接赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123; a: 2 &#125;</span><br><span class="line">let obj2 = obj</span><br><span class="line">obj2.a = 1</span><br><span class="line">obj.a // 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对象解构 </p>
+</li>
+<li>for in 循环赋值</li>
+<li><p>ES6 的 Object.assign</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let obj = &#123; a: 20, b: &#123; c: 3 &#125; &#125;</span><br><span class="line">let obj2 = Object.assign(&#123;&#125;, obj)</span><br><span class="line">obj2.a = 10</span><br><span class="line">obj.a // 20</span><br><span class="line">obj2.b.c = 10 </span><br><span class="line">obj.b.c // 10</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5>常见的深拷贝</h5>
+
+
+<ol>
+<li><p>JSON.parse(JSON.stringify())</p>
+<p>对象属性比较简单的时候可以使用，此方法会出现的问题有：</p>
+<ol>
+<li>值为 undefined 的属性转换后会丢失</li>
+<li>值为 Symbol 类型的属性在转换后丢失</li>
+<li>值为 RegExp 对象的属性在转换后变成了空对象</li>
+<li>值为 函数对象的属性在转换后丢失</li>
+<li>值为 Date 对象的属性在转换后变成了字符串</li>
+<li>会抛弃对象的 constructor,所有的构造函数会指向 Object</li>
+<li>对象的循环引用会抛出错误。</li>
+</ol>
+</li>
+<li><p>手动实现 deepClone</p>
+<p>解决问题：  </p>
+<ol>
+<li>循环引用过多导致爆栈  </li>
+<li>特殊值拷贝属性丢失</li>
+<li>会抛弃对象的 constructor,所有的构造函数会指向 Object  </li>
+</ol>
+</li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">function deepClone(obj, hash = new WeakMap()) &#123;</span><br><span class="line">    </span><br><span class="line">    &lt;!-- 特殊值过滤掉 typeof null === &apos;object&apos;  原生构造函数 --&gt;</span><br><span class="line"></span><br><span class="line">    if (obj === null) return obj</span><br><span class="line">    if (obj instanceof RegExp) return new RegExp(obj)</span><br><span class="line">    if (obj instanceof Date) return new Date(obj)</span><br><span class="line">    if (typeof obj !== &apos;object&apos;) return obj</span><br><span class="line"></span><br><span class="line">    &lt;!-- 避免循环引用爆栈 --&gt;</span><br><span class="line"></span><br><span class="line">    if (hash.has(obj)) return hash.get(obj)</span><br><span class="line">    </span><br><span class="line">    &lt;!-- constructor 属性理论上来说不太可靠，此属性可以被修改，但是在复制场景下 不太会被修改 --&gt;</span><br><span class="line"></span><br><span class="line">    let newObj = new obj.constructor</span><br><span class="line"></span><br><span class="line">    hash.set(obj, newObj)</span><br><span class="line"></span><br><span class="line">    &lt;!-- symbol 的 key 是不可枚举的类型，所以 hasOwnProperty 无法遍历出来，需要单独通过 getOwnPropertySymbols 解决 --&gt;</span><br><span class="line"></span><br><span class="line">    let symKeys = Object.getOwnPropertySymbols(obj)</span><br><span class="line">    if (symKeys.length) &#123;</span><br><span class="line">      symKeys.forEach(item =&gt; &#123;</span><br><span class="line">        newObj[item] = deepClone(obj[item], hash)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 只拷贝对象的值，不拷贝原型链上的值 --&gt;</span><br><span class="line"></span><br><span class="line">    for (const key in obj) &#123;</span><br><span class="line">      if (obj.hasOwnProperty(key)) &#123;</span><br><span class="line">        newObj[key] = deepClone(obj[key], hash)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return newObj</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="this">对 this 对象的理解</h3>
+
+<p>关于 this 的一些关键性理解：</p>
+<ol>
+<li>this 总是指向函数的直接调用者</li>
+<li>如果有 new 关键字，this 指向 new 出来的实例对象</li>
+<li>在事件中，this 指向触发这个事件的对象</li>
+<li>IE 下 attachEvent 中的 this 总是指向全局对象 Window</li>
+<li>箭头函数中，函数体内的this对象，就是定义时所在作用域的对象，而不是使用时所在的作用域的对象。</li>
+<li>箭头函数里的 this 如果放在全局中就是 window </li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123;</span><br><span class="line">  console.log(this.a)</span><br><span class="line">&#125;</span><br><span class="line">var a = 1</span><br><span class="line">foo()           //1  </span><br><span class="line">​</span><br><span class="line">const obj = &#123;</span><br><span class="line">  a: 2,</span><br><span class="line">  foo: foo</span><br><span class="line">&#125;</span><br><span class="line">obj.foo()      //2</span><br><span class="line">​</span><br><span class="line">const c = new foo()  // undefined</span><br><span class="line">  </span><br><span class="line">const obj2 = &#123;</span><br><span class="line">  a: 2,</span><br><span class="line">  foo: () =&gt; &#123;</span><br><span class="line">    console.log(this.a)	  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;!-- 箭头函数本身没有 this，只取决于包裹箭头函数的第一个普通函数的 this 。 此时是存在于obj，也就是window中，所以 this = window --&gt;</span><br><span class="line">obj2.foo() // 1 </span><br><span class="line"></span><br><span class="line">// this 指向被调用的函数的作用域</span><br><span class="line">var name = &quot;caibaojian.com&quot;; </span><br><span class="line">var person = &#123;</span><br><span class="line">    name: &quot;kang&quot;,</span><br><span class="line">    pro: &#123;</span><br><span class="line">        name: &quot;Michael&quot;,</span><br><span class="line">        getName: function() &#123;</span><br><span class="line">            return this.name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">console.log(person.pro.getName()); //Michael</span><br><span class="line">var people = person.pro.getName; // 此时调用函数的this 指向 window</span><br><span class="line">console.log(people()); //caibaojian.com</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&apos;use strict&apos;;</span><br><span class="line">var name = &quot;caibaojian.com&quot;; </span><br><span class="line">var person = &#123;</span><br><span class="line">    name: &quot;kang&quot;,</span><br><span class="line">    pro: &#123;</span><br><span class="line">        name: &quot;Michael&quot;,</span><br><span class="line">        getName: function() &#123;</span><br><span class="line">            console.log(this);</span><br><span class="line">            return this.name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">console.log(person.pro.getName()); //Michael</span><br><span class="line">var people = person.pro.getName;</span><br><span class="line">console.log(people()); //undefined 在严格模式下，如果this未被执行的上下文环境定义，那么它将会默认为undefined。</span><br><span class="line"></span><br><span class="line">// 普通函数</span><br><span class="line">function foo() &#123;</span><br><span class="line">  setTimeout(function() &#123;</span><br><span class="line">    console.log(&apos;id:&apos;, this.id);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var id = 21;</span><br><span class="line">foo.call(&#123; id: 42 &#125;); //21</span><br><span class="line"></span><br><span class="line">// 箭头函数</span><br><span class="line">function foo() &#123;</span><br><span class="line">  setTimeout(function() &#123;</span><br><span class="line">    console.log(&apos;id:&apos;, this.id);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var id = 21;</span><br><span class="line">foo.call(&#123; id: 42 &#125;); // 42，箭头函数中的 this 和执行的函数内部的this保持一致，此时通过 call 方法指向了 &#123;id: 42&#125; 所以此时输出 42</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">// 箭头函数</span><br><span class="line">function foo() &#123;</span><br><span class="line">  setTimeout(function() &#123;</span><br><span class="line">    console.log(&apos;id:&apos;, this.id);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var id = 21;</span><br><span class="line">foo.call(); // 21</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>手动实现 bind 函数。  </p>
+<pre><code>bind 做了什么：  
+1. 将 this 绑定到当前函数参数中
+2. 不立即执行，返回一个函数
+3. 函数参数原型上的方法还能执行
+4. this 不能在绑定到其他变量上面
+5. 待执行函数还可以传递其他参数
+</code></pre>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Function.prototype.bind = function(obj) &#123;</span><br><span class="line">  let args = [].slice.call(arguments, 1)</span><br><span class="line">  var fn = this</span><br><span class="line">  var bound = function() &#123;</span><br><span class="line">    var argguments = Array.from(argguments)</span><br><span class="line">    fn.apply(this.constructor === fn ? this : obj, args.concat(argguments))</span><br><span class="line">  &#125;</span><br><span class="line">  bound.prototype = fn.prototype</span><br><span class="line">  return bound</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br></p>
+<ol start="2">
+<li>手动实现 call / apply 函数</li>
+</ol>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 简单实现 call --&gt;</span><br><span class="line"></span><br><span class="line">Function.prototype.call_ = function (obj) &#123;</span><br><span class="line">    obj.fn = this; // 此时this就是函数fn</span><br><span class="line">    obj.fn(); // 执行fn</span><br><span class="line">    delete obj.fn; //删除fn</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&lt;!-- ES5 call --&gt;</span><br><span class="line">Object.prototype.call = function(obj) &#123;</span><br><span class="line">    //判断是否为null或者undefined,同时考虑传递参数不是对象情况</span><br><span class="line">    obj = obj ? Object(obj) : window;</span><br><span class="line">    var args = [];</span><br><span class="line">    // 注意i从1开始</span><br><span class="line">    for (var i = 1, len = arguments.length; i &lt; len; i++) &#123;</span><br><span class="line">        args.push(&quot;arguments[&quot; + i + &quot;]&quot;);</span><br><span class="line">    &#125;;</span><br><span class="line">    obj.fn = this; // 此时this就是函数fn</span><br><span class="line">    eval(&quot;obj.fn(&quot; + args + &quot;)&quot;); // 执行fn</span><br><span class="line">    delete obj.fn; //删除fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// ES6 call</span><br><span class="line">Function.prototype.call_ = function (obj) &#123;</span><br><span class="line">    obj = obj ? Object(obj) : window;</span><br><span class="line">    obj.fn = this;</span><br><span class="line">    // 利用拓展运算符直接将arguments转为数组</span><br><span class="line">    let args = [...arguments].slice(1);</span><br><span class="line">    let result = obj.fn(...args);</span><br><span class="line"></span><br><span class="line">    delete obj.fn</span><br><span class="line">    return result;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// ES5 apply</span><br><span class="line">Function.prototype.apply_ = function (obj, arr) &#123;</span><br><span class="line">    obj = obj ? Object(obj) : window;</span><br><span class="line">    obj.fn = this;</span><br><span class="line">    var result;</span><br><span class="line">    if (!arr) &#123;</span><br><span class="line">        result = obj.fn();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        var args = [];</span><br><span class="line">        // 注意这里的i从0开始</span><br><span class="line">        for (var i = 0, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">            args.push(&quot;arr[&quot; + i + &quot;]&quot;);</span><br><span class="line">        &#125;;</span><br><span class="line">        result = eval(&quot;obj.fn(&quot; + args + &quot;)&quot;); // 执行fn</span><br><span class="line">    &#125;;</span><br><span class="line">    delete obj.fn; //删除fn</span><br><span class="line">    return result;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// ES6 apply</span><br><span class="line">Function.prototype.apply_ = function (obj, arr) &#123;</span><br><span class="line">    obj = obj ? Object(obj) : window;</span><br><span class="line">    obj.fn = this;</span><br><span class="line">    let result;</span><br><span class="line">    if (!arr) &#123;</span><br><span class="line">        result = obj.fn();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        result = obj.fn(...arr);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    delete obj.fn</span><br><span class="line">    return result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="transform">隐式转换</h3>
+
+<p>隐式转换规则：  </p>
+<ol>
+<li>undefined == null，结果是true。且它俩与所有其他值比较的结果都是false。</li>
+<li>String == Boolean，需要两个操作数同时转为Number。</li>
+<li>String/Boolean == Number，需要String/Boolean转为Number。</li>
+<li>Object == Primitive，需要Object转为Primitive(具体通过valueOf和toString方法)。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">var a = [1, 2, 3];</span><br><span class="line">var b = [1, 2, 3];</span><br><span class="line">var c = &quot;1,2,3&quot;;</span><br><span class="line"></span><br><span class="line">a == c; // true</span><br><span class="line">b == c; // true 数组和字符串比较时，数组会通过逗号拼接转换为字符串</span><br><span class="line">a == b; // false 两个相同数组不相等</span><br><span class="line"></span><br><span class="line">思考题：</span><br><span class="line">++[[]][+[]]+[+[]]==10 // true</span><br><span class="line"></span><br><span class="line">// (++[[]][+[]]) + ([+[]])</span><br><span class="line">// +[] = 0  </span><br><span class="line">// (++[[]][0]) + [0]</span><br><span class="line">// var a = [[]][0]; ++a;</span><br><span class="line">// var a = []; a = a+1; ++[] = 1</span><br><span class="line">// 1 + [0]  // [0] == &apos;0&apos;</span><br><span class="line">// &apos;10&apos;</span><br><span class="line"></span><br><span class="line">valueOf 和 toString()</span><br></pre></td></tr></table></figure>
+<h3 id="eventLoop">事件循环， 宏任务，微任务</h3>
+
+<ol>
+<li><p>打印一下结果 事件循环和异步</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">async function async1() &#123;</span><br><span class="line">    console.log(&apos;async1 start&apos;);</span><br><span class="line">    await async2();</span><br><span class="line">    console.log(&apos;async1 end&apos;);</span><br><span class="line">&#125;</span><br><span class="line">async function async2() &#123;</span><br><span class="line">    console.log(&apos;async2&apos;);</span><br><span class="line">&#125;</span><br><span class="line">console.log(&apos;script start&apos;);</span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(&apos;setTimeout&apos;);</span><br><span class="line">&#125;, 0)</span><br><span class="line">async1();</span><br><span class="line">new Promise(function(resolve) &#123;</span><br><span class="line">    console.log(&apos;promise1&apos;);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(&apos;promise2&apos;);</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&apos;script end&apos;);</span><br><span class="line"></span><br><span class="line">// 打印结果</span><br><span class="line">	script start</span><br><span class="line">	async1 start</span><br><span class="line">	async2</span><br><span class="line">	promise1</span><br><span class="line">	script end</span><br><span class="line">	async1 end</span><br><span class="line">	promise2</span><br><span class="line">	setTimeout</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>事件循环和异步</p>
+<p> 微任务：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line">// setTimeout 和 promise</span><br><span class="line">const tasks = []</span><br><span class="line">const output = (i) =&gt; new Promise((reslove) =&gt; &#123;</span><br><span class="line">	setTimeout(() =&gt; &#123;</span><br><span class="line">		console.log(i);</span><br><span class="line">		reslove();</span><br><span class="line">	&#125;, 1000 * i)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">for(var i = 0; i&lt;5; i++) &#123;</span><br><span class="line">	tasks.push(output(i))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Promise.all(tasks).then(() =&gt; &#123;</span><br><span class="line">	setTimeout(() =&gt; &#123;</span><br><span class="line">		console.log(i)</span><br><span class="line">	&#125;, 1000)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// 0 1 2 3 4 5</span><br><span class="line"></span><br><span class="line">// setTimout 和 sleep</span><br><span class="line">setTimeout(() =&gt; &#123; console.log(1) &#125;, 1000)</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123; console.log(2) &#125;, 0)</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    console.log(3)</span><br><span class="line">    setTimeout(() =&gt; &#123; console.log(4) &#125;, 0)</span><br><span class="line"> &#125;, 800)</span><br><span class="line">function sleep(delay) &#123;</span><br><span class="line">    var start = (new Date()).getTime();</span><br><span class="line">    while((new Date()).getTime() - start &lt; delay) &#123;</span><br><span class="line">        continue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sleep(1200)</span><br><span class="line">console.log(5)</span><br><span class="line">for(var i=10;i&lt;=15;i++) &#123;</span><br><span class="line">    setTimeout(() =&gt; &#123;console.log(i)&#125;, 0)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 5 2 3 1 16*6  4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// setTimeout process.nextTick promise</span><br><span class="line">console.log(&apos;1&apos;);</span><br><span class="line">async function async1() &#123;</span><br><span class="line">    console.log(&apos;2&apos;);</span><br><span class="line">    await async2();</span><br><span class="line">    console.log(&apos;3&apos;);</span><br><span class="line">&#125;</span><br><span class="line">async function async2() &#123;</span><br><span class="line">    console.log(&apos;4&apos;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">process.nextTick(function() &#123;</span><br><span class="line">    console.log(&apos;5&apos;);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">    console.log(&apos;6&apos;);</span><br><span class="line">    process.nextTick(function() &#123;</span><br><span class="line">        console.log(&apos;7&apos;);</span><br><span class="line">    &#125;)</span><br><span class="line">    new Promise(function(resolve) &#123;</span><br><span class="line">        console.log(&apos;8&apos;);</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then(function() &#123;</span><br><span class="line">        console.log(&apos;9&apos;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">async1();</span><br><span class="line"></span><br><span class="line">new Promise(function(resolve) &#123;</span><br><span class="line">    console.log(&apos;10&apos;);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">    console.log(&apos;11&apos;);</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&apos;12&apos;);</span><br><span class="line"></span><br><span class="line">// 1 2 4 10 12 5 （3 11） 6 8 7 9 </span><br><span class="line"></span><br><span class="line">// 宏任务 和 微任务的创建时机</span><br><span class="line"></span><br><span class="line">	console.log(&apos;start&apos;);</span><br><span class="line">	setTimeout(() =&gt; &#123;</span><br><span class="line">	    console.log(&apos;children2&apos;);</span><br><span class="line">	    Promise.resolve().then(() =&gt; &#123;</span><br><span class="line">	        console.log(&apos;children3&apos;);</span><br><span class="line">	    &#125;)</span><br><span class="line">	&#125;, 0);</span><br><span class="line">	</span><br><span class="line">	new Promise(function(resolve, reject) &#123;</span><br><span class="line">	    console.log(&apos;children4&apos;);</span><br><span class="line">	    setTimeout(function() &#123;</span><br><span class="line">	        console.log(&apos;children5&apos;);</span><br><span class="line">	        resolve(&apos;children6&apos;)</span><br><span class="line">	    &#125;, 0)</span><br><span class="line">	&#125;).then((res) =&gt; &#123;</span><br><span class="line">	    console.log(&apos;children7&apos;);</span><br><span class="line">	    setTimeout(() =&gt; &#123;</span><br><span class="line">	        console.log(res);</span><br><span class="line">	    &#125;, 0)</span><br><span class="line">	&#125;)</span><br><span class="line">// 执行结果</span><br><span class="line"></span><br><span class="line">start</span><br><span class="line">children4</span><br><span class="line">children2</span><br><span class="line">children3</span><br><span class="line">children5</span><br><span class="line">children7</span><br><span class="line">children6</span><br><span class="line"></span><br><span class="line">// 说明：在没有 reslove 的时候，不会将 then 创建为微任务</span><br><span class="line"></span><br><span class="line">// </span><br><span class="line"></span><br><span class="line">const p = function() &#123;</span><br><span class="line">	    return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">	        const p1 = new Promise((resolve, reject) 						=&gt; &#123;</span><br><span class="line">	            setTimeout(() =&gt; &#123;</span><br><span class="line">	                resolve(1)</span><br><span class="line">	            &#125;, 0)</span><br><span class="line">	            resolve(2)</span><br><span class="line">	        &#125;)</span><br><span class="line">	        p1.then((res) =&gt; &#123;</span><br><span class="line">	            console.log(res);</span><br><span class="line">	        &#125;)</span><br><span class="line">	        console.log(3);</span><br><span class="line">	        resolve(4);</span><br><span class="line">	    &#125;)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	p().then((res) =&gt; &#123;</span><br><span class="line">	    console.log(res);</span><br><span class="line">	&#125;)</span><br><span class="line">	console.log(&apos;end&apos;);</span><br><span class="line"></span><br><span class="line">// 从上向下执行，p1.then 先进入微任务队列，p.then 后进入，所以结果为：</span><br><span class="line">// 3 ‘end’ 2 4</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="hoisting">提升（hoisting）</h3>
+
+<ol>
+<li>var 声明会提升</li>
+<li>函数声明会首先提升，但是函数表达式不会提升声明</li>
+<li>声明统一提前，赋值原地不变</li>
+<li>提升变量阶段： var 是提升声明，还没有被定义； 函数关键字的就已经声明和定义  </li>
+<li><p>条件判断语句，没有大括号时，if 条件不满足，则最近的一条语句不执行，if 满足，则后面的条件都会走； 有大括号时，不满足时外部条件都执行</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">a = 2</span><br><span class="line">var a</span><br><span class="line">console.log(a) // 2</span><br><span class="line"></span><br><span class="line">console.log(a) // undefined</span><br><span class="line">var a = 2 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function A() &#123; console.log(2) &#125;</span><br><span class="line">var A = function() &#123; console.log(1) &#125;</span><br><span class="line">A()</span><br><span class="line">// 1</span><br><span class="line"></span><br><span class="line">var A = function() &#123; console.log(1) &#125;</span><br><span class="line">function A() &#123; console.log(2) &#125;</span><br><span class="line">A()</span><br><span class="line">// 1 此时 A 已经在window 属性下，这属于重名，根据js自上而下执行，此时再次声明会被忽略</span><br><span class="line"></span><br><span class="line">A()</span><br><span class="line">var A = function() &#123; console.log(1) &#125;</span><br><span class="line">function A() &#123; console.log(2) &#125;</span><br><span class="line">// 2 函数声明会首先被提升，所以输出 2</span><br><span class="line"></span><br><span class="line">A()</span><br><span class="line">function A() &#123; console.log(2) &#125;</span><br><span class="line">var A = function() &#123; console.log(1) &#125;</span><br><span class="line">function A() &#123; console.log(3) &#125;</span><br><span class="line">// 3 重复的函数声明还是可以覆盖前面的,函数表达式不会声明提前</span><br><span class="line">	</span><br><span class="line">if(true) &#123; function B() &#123; console.log(1) &#125; &#125;</span><br><span class="line">&#123; var B = function() &#123; console.log(2) &#125;  &#125;</span><br><span class="line">B()</span><br><span class="line">// 2  函数声明之后，函数表达式可以改变函数； </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">console.log(a, b) // undefined undefined 执行时都未定义 所以输出 undefined</span><br><span class="line">var a =12, b =&apos;林一一&apos; // window.b = &apos;林一一&apos;</span><br><span class="line">function foo()&#123;</span><br><span class="line"></span><br><span class="line">    console.log(a, b) // 此时 b 不带 var 将向上级作用域查找， a 因为函数内部 var 变量提升 为 undefined</span><br><span class="line"></span><br><span class="line">    var a = b =13</span><br><span class="line">    console.log(a, b) // 13 13 window.b = 13， a 此时为函数内部变量</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line">console.log(a, b) // 12 13 此时读取全局变量 a = 12， window.b 有foo 改变，所以为 13</span><br><span class="line"></span><br><span class="line">// undefined undefined</span><br><span class="line">// undefined 林--</span><br><span class="line">// 13 13</span><br><span class="line">// 12 13</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = 0</span><br><span class="line">function foo()&#123;</span><br><span class="line">    var a =12;</span><br><span class="line">    b = &apos;林一一&apos;</span><br><span class="line">    console.log(&apos;b&apos; in window) // b 没有声明 因此向上级作用域查找 true</span><br><span class="line">    console.log(a, b) // 12 &apos;林一一&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">foo()</span><br><span class="line">console.log(b) // window.b = &apos;林一一&apos;</span><br><span class="line">console.log(a) // window.a = 0 </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function foo()&#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">    a =12;</span><br><span class="line">    b = &apos;林一一&apos;</span><br><span class="line">    console.log(&apos;b&apos; in window)</span><br><span class="line">    console.log(a, b)</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br><span class="line">// 抛出 ReferenceError: a is not defined</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fn();</span><br><span class="line">console.log(v1);</span><br><span class="line">console.log(v2);</span><br><span class="line">console.log(v3);</span><br><span class="line">function fn()&#123;</span><br><span class="line">    var v1 = v2 = v3 = 2019;</span><br><span class="line">    console.log(v1);</span><br><span class="line">    console.log(v2);</span><br><span class="line">    console.log(v3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// if 判断语句下的变量提升</span><br><span class="line">if(!(&quot;value&quot; in window))&#123;</span><br><span class="line">   var value = 2019; </span><br><span class="line">&#125;</span><br><span class="line">console.log(value);  // undefined if 条件语句中无论条件是否成立里面的var或者function 声明被提升</span><br><span class="line">console.log(&apos;value&apos; in window);  // true if 条件语句中无论条件是否成立里面的变量都会提升</span><br><span class="line"></span><br><span class="line">var a=2;</span><br><span class="line">function a() &#123;</span><br><span class="line">    console.log(3);</span><br><span class="line">&#125;</span><br><span class="line">console.log(typeof a);</span><br><span class="line"></span><br><span class="line">// number 通过 var 声明之后，根据自上而下执行机制，函数声明被忽略</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> var a = 10;</span><br><span class="line">   (function () &#123;</span><br><span class="line">       console.log(a)</span><br><span class="line">       a = 5</span><br><span class="line">       console.log(window.a)</span><br><span class="line">       var a = 20;</span><br><span class="line">       console.log(a)</span><br><span class="line">   &#125;)()</span><br><span class="line">   // undefined 10 20</span><br><span class="line">   // 存在两个作用域 全局作用域和匿名函数作用域， 函数作用域内因为有 var ，存在变量名提升，所以先打印 undefined， window.a 输出的是全局变量a，为10</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="scope">作用域</h3>
+
+<ol>
+<li><p>考察作用域</p>
+<p> 哪些语法会创建块级作用域：   </p>
+<pre><code>1. try/catch,catch 分句会创建块及作用域，error 只能在内部调用
+2. with 
+3. let 会将变量绑定在任意作用域中，比如常见的 {} ,let 声明不会提升
+4.  {} 会创建块及作用域， 里面声明的变量或者函数无论条件是否满足，都会被变量提升
+</code></pre> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">for(var i =0; i&lt; 5;i++) &#123; </span><br><span class="line">	setTimeout((i) =&gt; &#123;console.log(i)&#125;, 0) </span><br><span class="line">&#125;</span><br><span class="line">// 5 5 5 5 5</span><br><span class="line"></span><br><span class="line">for(let i =0; i&lt; 5;i++) &#123; </span><br><span class="line">	setTimeout((i) =&gt; &#123;console.log(i)&#125;, 0) </span><br><span class="line">&#125;</span><br><span class="line">// 0 1 2 3 4</span><br><span class="line"></span><br><span class="line">for(var i =0; i&lt; 5;i++) &#123; </span><br><span class="line">	(function(i)&#123;</span><br><span class="line">		setTimeout((i) =&gt; &#123;console.log(i)&#125;, 0)</span><br><span class="line">	&#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let i; // 此时的 i 仍声明在全局变量中</span><br><span class="line">for(i=0;i&lt;5;i++) &#123;</span><br><span class="line">	setTimeout(() =&gt; &#123;console.log(i) &#125;, 0)</span><br><span class="line">&#125;</span><br><span class="line">// 5 5 5 5 5</span><br><span class="line"></span><br><span class="line">for(let i=0;i&lt;5;i++) &#123; // let 将 i 绑定到for 循环中，并且是将其重新绑定到每次循环中，所以可以得到 0 1 2 3 4</span><br><span class="line">	setTimeout(() =&gt; &#123;console.log(i) &#125;, 0)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function demo()&#123;</span><br><span class="line">    let x = b = 0;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">demo()</span><br><span class="line">console.log(typeof x) x  //  undefined 只在函数内部声明，所以外部无法获取</span><br><span class="line">console.log(typeof b) b // number 并没有被声明，所以向上级作用域查找并最终添加到window.b ,var let const 在此场景下功效相同</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="reg">正则表达式</h3>
+
+<ol>
+<li><p>正则表达式</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var str = &apos;&lt;p&gt; Hello &lt;/p&gt; World &lt;br&gt;!&lt;/br&gt;&apos;;</span><br><span class="line">var regx = /&lt;[^&lt;&gt;]+&gt;/g</span><br><span class="line">console.log(str.replace(regx, &apos;&apos;));</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="keys">object 的 key值的类型转换</h3>
+
+<p>obj 的 key 如果是变量的话，会转换成 string</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;&#125;</span><br><span class="line">var b = &#123;key:&apos;b&apos;&#125;</span><br><span class="line">var c = &#123;key:&apos;c&apos;&#125;</span><br><span class="line">var d = [3,5,6];</span><br><span class="line">var e = true</span><br><span class="line">var f = function test() &#123; console.log(1) &#125;</span><br><span class="line">var g = Symbol(1)</span><br><span class="line"></span><br><span class="line">a[b] = 123;</span><br><span class="line">a[c] = 345;</span><br><span class="line">a[d] = 333;</span><br><span class="line">a[e] = 111</span><br><span class="line">a[f] = 222</span><br><span class="line">a[g] = 444</span><br><span class="line"></span><br><span class="line">console.log(a[b]); // a[object Object]: 345</span><br><span class="line">console.log(a[c]); // a[object Object]: 345</span><br><span class="line">console.log(a[d]); // a[1,2,3]: 333</span><br><span class="line">console.log(a[e]); // a[&apos;true&apos;]: 111</span><br><span class="line">console.log(a[f]); // a[&apos;function test() &#123; console.log(1) &#125;&apos;]: 222</span><br><span class="line">console.log(a[g]); // a[&apos;Symbol(1)&apos;]: 222</span><br></pre></td></tr></table></figure>
+<h3 id="methods"> js 方法</h3>
+
+<ol>
+<li><p>考察 array 数组方法</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[1,2,3,4].reduce((x,y) =&gt; &#123;console.log(x,y); return x;&#125;)</span><br><span class="line"></span><br><span class="line"> // 输出结果</span><br><span class="line"></span><br><span class="line">A: 1 2; 3 3; 6 4;</span><br><span class="line">B: 1 2; 2 3; 3 4;</span><br><span class="line">C: 1 undefined; 2 undefined; 3 undefined; 4 undefined;</span><br><span class="line">D: 1 2; undefined 3; undefined 4;</span><br><span class="line"></span><br><span class="line">// reduce 不改变原数组，返回新数组</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>考察作用域，函数</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const value = &#123; number: 10 &#125;</span><br><span class="line">const mutlipt = (x = &#123; ...value &#125;) =&gt; &#123;</span><br><span class="line">	console.log(x.number *= 2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mutlipt()</span><br><span class="line">mutlipt()</span><br><span class="line">mutlipt(value)</span><br><span class="line">mutlipt(value)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="3">
+<li><p>考察加减</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let num = 10</span><br><span class="line">let increaseNum = () =&gt; num++;</span><br><span class="line">let increasePassedNum = (number) =&gt; number++;</span><br><span class="line"></span><br><span class="line">let num1 = increaseNum();</span><br><span class="line">let num2 = increasePassedNum(num1++);</span><br><span class="line"></span><br><span class="line">console.log(num1);</span><br><span class="line">console.log(num2);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="4">
+<li><p>JSON.stringify 第二个参数</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">    name: &apos;test&apos;,</span><br><span class="line">    age: 18,</span><br><span class="line">    email: &apos;qq.com&apos;</span><br><span class="line">&#125;</span><br><span class="line">var b = JSON.stringify(a, [&apos;age&apos;, &apos;email&apos;])</span><br><span class="line"></span><br><span class="line">// 解读：</span><br><span class="line">JSON.stringify(value, replacer)</span><br><span class="line">replacer：</span><br><span class="line">如果是函数 则以该函数对所有value做格式化处理</span><br><span class="line">如果是数组，则只有包含在这个数组中的属性名才会被序列化到最终的 	JSON 字符串中；</span><br><span class="line">如果该参数为 null 或者未提供，则对象所有的属	性都会被序列化</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="5">
+<li><p>考察 Object.defineProperty, Object.keys</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var person = &#123; name: &apos;haha&apos; &#125;</span><br><span class="line">Object.defineProperty(person, &apos;age&apos;, &#123; value: 12 &#125;)</span><br><span class="line">console.log(person)</span><br><span class="line">console.log(Object.keys(person))</span><br><span class="line"></span><br><span class="line">// Object.keys 返回对象可枚举 enumerable 的属性</span><br><span class="line">// Object.defineProperty 定义的属性默认 enumerable configurable writable 为 false，get set value 为 undefined</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="6">
+<li><p>考察 delete</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const name = &apos;111&apos;</span><br><span class="line">age = 18</span><br><span class="line">console.log(delete name)</span><br><span class="line">console.log(delete age)</span><br><span class="line"></span><br><span class="line">// 任何存在或者不存在的属性删除时 返回 true</span><br><span class="line">// 除非删除不可设置的属性时，返回 false ，使用 let / const 声明的变量</span><br><span class="line">// delete 只会删除自身属性 不会删除原型链上的属性</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="7">
+<li><p>charAt </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var str = &apos;aaa we dasd&apos;</span><br><span class="line">console.log(str.charAt(3)) // &quot; &quot;</span><br><span class="line">console.log(str.chatAt(0)) // a</span><br><span class="line"></span><br><span class="line">小驼峰字符串：</span><br><span class="line"></span><br><span class="line">let capitalize = (value) =&gt; &#123;</span><br><span class="line">	value = toString(value)</span><br><span class="line">	let firstCode = value.charAt(0)</span><br><span class="line">	let trailing = value.slice(1)</span><br><span class="line">	return firstCode.toUpperCase() + trailing;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="8">
+<li><p>generator  生成器</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function* generator(i)&#123;</span><br><span class="line">  		yield i</span><br><span class="line">  		yield i * 2</span><br><span class="line">&#125;</span><br><span class="line">	</span><br><span class="line">let gen = generator(10);</span><br><span class="line"></span><br><span class="line">console.log(gen.next().value);</span><br><span class="line">// 10</span><br><span class="line">console.log(gen.next().value);</span><br><span class="line">// 20</span><br><span class="line">console.log(gen.next().value);</span><br><span class="line">// undefined</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="9">
+<li><p>set</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 一维数组去重 </span><br><span class="line">Array.from(new Set([1,1,2,2,3]))</span><br><span class="line"></span><br><span class="line">// 根据先进先出，获取最先插入的元素</span><br><span class="line">set.entries().next().value[0]</span><br><span class="line"></span><br><span class="line">// delete 操作返回值</span><br><span class="line">返回操作前 has 的值，存在当前值则返回 true， 不存在则返		回 false</span><br><span class="line"></span><br><span class="line">// 值 大小写敏感并且不能重复</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="10">
+<li><p>运算符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">3.1 3. .3 都是合法的数字</span><br><span class="line">// 以下哪些情况会输出 ’3‘</span><br><span class="line">3.toString() // 解析为 (3.)toString()</span><br><span class="line">3..toString() // (3.).toString()</span><br><span class="line">3...toString() // (3..).toString()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>error 的类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RangeError:  数值变量或参数超出其有效范围</span><br><span class="line">ReferenceError:  无效的引用，比如变量未定义</span><br><span class="line">SyntaxError: eval()在解析代码的过程中发生的语法错误。</span><br><span class="line">TypeError: 变量或参数不属于有效类型</span><br><span class="line">URIError: 给 encodeURI()或  decodeURl()传递的参数无效。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>手动书写 Promise.all </p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function promiseAll (promises) &#123;</span><br><span class="line">	let result = promised.map(promise =&gt; &#123;</span><br><span class="line">		return promise.then(res =&gt; &#123;</span><br><span class="line">			return Promise.reslove(res);</span><br><span class="line">		&#125;).catch(error =&gt; &#123;</span><br><span class="line">			return Promise.reject(error);</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2020/12/04/npm-install-vs-yarn-install/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2021-04-14 03:43:00
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/fontend/" title="fontend">
+                        <b>#</b> fontend
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/js基础/" title="js基础">
+                        <b>#</b> js基础
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/前端面试题/" title="前端面试题">
+                        <b>#</b> 前端面试题
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/11/02/前端base64知识/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#value"><span class="toc-text"> 值传递和值引用 </span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#null"><span class="toc-text">常见的浅拷贝</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#null"><span class="toc-text">常见的深拷贝</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#this"><span class="toc-text">对 this 对象的理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#transform"><span class="toc-text">隐式转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#eventLoop"><span class="toc-text">事件循环， 宏任务，微任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hoisting"><span class="toc-text">提升（hoisting）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scope"><span class="toc-text">作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reg"><span class="toc-text">正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#keys"><span class="toc-text">object 的 key值的类型转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#methods"><span class="toc-text"> js 方法</span></a></li></ol>
+    </div>
+  </div>
+
+  <script src="/js/catalog.js"></script>
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+<script src="/js/backtotop.js"></script>
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>
