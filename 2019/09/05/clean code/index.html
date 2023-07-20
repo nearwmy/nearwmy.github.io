@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content>
+  <meta name="author" content="nearwmy">
+  <meta name="description" content="A blog about font-end and life">
+  
+  
+  <title>
+    
+      clean code 
+      
+      
+      |
+    
+     I&#39;m near
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  <script src="/js/fancybox.js"></script>
+
+  
+
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+<script src="/js/activeNav.js"></script>
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">clean code</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2019-09-05 05:52:02
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/fontend/" title="fontend">
+                    <b>#</b> fontend
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/代码整洁/" title="代码整洁">
+                    <b>#</b> 代码整洁
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <p>工作以来深有体会代码规范的重要性，直接影响你的工作心情。看到不好的代码，想好言相劝，并且有理有据，并且从根本上杜绝这种对自己代码不负责的行为，所以啃了本 代码整洁之道，从中得到了不少启发，并且为规范找到的好的依据点，在这里做一个总结，留个案底～</p>
+<p><a href="#variable">命名约定</a><br><a href="#function">函数</a><br><a href="#class">类</a><br><a href="#object">数据结构</a><br><a href="#comment">注释</a><br><a href="#error-handle">错误处理</a><br><a href="#unit-test">单元测试</a><br><a href="#unit-test">一般性问题</a><br><a href="#unit-test">几个原则</a></p>
+<h4 id="variable">命名约定</h4>
+
+<p>使用有意义 可读性好的描述性变量名，别心疼空间, 毕竟相比之下让代码易于新读者理解更重要. 不要用只有项目开发者能理解的缩写, 也不要通过砍掉几个字母来缩写单词.</p>
+<h4 id="function">函数</h4>
+
+<ol>
+<li><p>短小 </p>
+<p> 推荐编写简短精悍的函数，承认长函数有时是合理的, 因此并不硬性限制函数的长度. 如果函数超过 40 行, 可以思索一下能不能在不影响程序结构的前提下对其进行分割.</p>
+</li>
+<li><p>只做一件事， 单一责任原则， 并且一个函数就一个抽象层级</p>
+</li>
+<li>自上而下写函数，最小惊异原则</li>
+<li><p>合理的使用 if/else 和 switch 语句</p>
+<p> switch 语句由于独特的case值判断逻辑，执行效率上优于 if/else<br> switch 通常用于多态， case 参数为一种类型的多个值， if/else 则用于满足明确不同条件范围的语境<br> 根据不同语境，适当采用不同方法</p>
+</li>
+<li><p>函数参数</p>
+<p> 最好是零参数<br> 其次是一元，二元，三元，参数越多，出现的问题可能越到，测试用例也会越多<br> 正确使用标识参数，比如为函数传递 boolean，就明确标识了函数不止做一件事，这时应该重新考虑的函数<br> 通常情况下，参数超过两个意味着函数功能过于复杂，参数过多的时候，尤其是超过三元，请注意你的参数是否在描述同一个事物，如果是，可以使用参数对象<br> 输出参数</p>
+</li>
+<li><p>无副作用</p>
+<p> 你的函数名应该能足够反映你的函数能力，不能存在隐含逻辑</p>
+</li>
+<li><p>移除重复的代码</p>
+<p> 永远不要在任何循环下存在重复代码</p>
+</li>
+<li><p>采用默认参数精简代码</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">反例： </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeForumComment</span>(<span class="params">subject, body</span>) </span>&#123;</span><br><span class="line">    subject = subject || <span class="string">'No Subject'</span>;</span><br><span class="line">    body = body || <span class="string">'No text'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">正例：</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeForumComment</span>(<span class="params">subject = <span class="string">'No subject'</span>, body = <span class="string">'No text'</span></span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>封装判断条件</p>
+<p> 当你的判断条件具有特殊意义，并且判断条件超过两个时，考虑抽象成一个良好命名的函数，便于理解</p>
+</li>
+<li><p>删除无效代码</p>
+<p>不再被调用的代码应该被立即删除</p>
+</li>
+</ol>
+<h4 id="class">类</h4>
+
+<ol>
+<li>类应该短小，单一职责， 每一个小类的封装应当只有一个权责和一个修改的原因</li>
+<li><p>多造几个工具而不是多造几个抽屉</p>
+<p> 有许多短小类的系统并不比有少量庞大类的系统拥有更多移动组件，其数量是大致相等的，问题在于你是想多造几个工具归类到标记和定义良好的组件的工具箱还是想要几个能把所有东西都扔进去的抽屉</p>
+</li>
+<li><p>软件能工作和软件保持整洁，是完全不同的高度， 软件能工作并不意味着万事大吉，后者更重要</p>
+</li>
+<li><p>隔离修改</p>
+<p> OPI：依赖倒置原则，类应该依赖于抽象类，而不是具体实现类</p>
+</li>
+</ol>
+<h4 id="object">数据结构</h4>
+
+<p>对象： 暴露行为，隐藏结构<br>数据结构： 暴露结构，没有明显的行为<br>这章不是很懂。</p>
+<h4 id="comment">注释</h4>
+
+<p>原则： 尽量别写注释</p>
+<ol>
+<li><p>注释会存在的问题：</p>
+<ul>
+<li>不恰当的信息： 注释只应该描述有关代码设计的技术型信息</li>
+<li>废弃的注释：过时 无关和不正确的信息 以及废弃的代码应该及时更新和删除</li>
+<li>冗余注释： 注释应该谈及代码自身没提到的事情</li>
+<li>糟糕的注释： 应该是正确的拼写和语法 保持整洁</li>
+<li>注释掉的代码： 注释掉的代码应立即删除 源代码控制系统会帮你记住</li>
+</ul>
+</li>
+<li><p>可以注释的：</p>
+<ul>
+<li>提供有用的信息，比如 法律信息，参考文档链接等</li>
+<li>对某个决定的说明</li>
+<li>阐释性注释</li>
+<li>警示</li>
+<li>todo</li>
+</ul>
+</li>
+<li><p>不需要注释的：</p>
+<ul>
+<li>和代码上下文无关，个人主观描述等</li>
+<li>旧注释： 无人维护和上下文不符</li>
+<li>日志式注释</li>
+<li>author </li>
+<li>注释掉的代码</li>
+<li>函数头注释， 取一个好理解的函数名可替代注释</li>
+</ul>
+</li>
+</ol>
+<h4 id="error-handle">错误处理</h4>
+
+<ol>
+<li>错误处理的建议方法： 抛出异常而不是返回错误码，便于隔离错误处理，其逻辑不被错误处理所影响</li>
+<li>try catch finally ，学会用这样的方式处理你的代码逻辑，保证代码的正常运行。try </li>
+<li>提供充足的错误环境说明，定位问题</li>
+<li>依调用者的需要定义异常类</li>
+<li>不要返回 null 或者传递 null 值，去增加业务逻辑</li>
+</ol>
+<p>总结： 代码可读和强固并不冲突，将错误处理隔离开来，独立于业务逻辑，就会变的可读并整洁</p>
+<h4 id="unit-test">单元测试</h4>
+
+<p>TDD 三定律：</p>
+<p>定律一： 在编写不能通过的单元测试前，不可编写生产代码<br>定律二： 只可编写刚好无法通过的单元测试，不能编译不算通过<br>定律三： 只可编写刚好足以通过当前失败测试的生产代码</p>
+<p>测试的好处： 有了测试你就不担心修改代码了，你的代码就变得 可扩展，可维护，可复用，并且代码测试覆盖率高</p>
+<p>每一个测试一个概念，不在一个冗长的测试函数中包含多个职责或概念</p>
+<p>FIRST 规则：</p>
+<ol>
+<li>F fast 快速： 测试运营应该足够快</li>
+<li>I Independent 独立： 测试之间应该相互独立</li>
+<li>R Repeatable 可重复： 测试应当可在任何环境中重复通过</li>
+<li>S Self-valiating 自足验证； 测试应该有布尔值输出</li>
+<li>T Timely 及时： 测试应该及时编写</li>
+</ol>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2019/07/23/日常工具/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2019-09-05 05:52:02
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/fontend/" title="fontend">
+                        <b>#</b> fontend
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/代码整洁/" title="代码整洁">
+                        <b>#</b> 代码整洁
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2020/01/05/回首-2019/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#variable"><span class="toc-text">命名约定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#function"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#class"><span class="toc-text">类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#object"><span class="toc-text">数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#comment"><span class="toc-text">注释</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#error-handle"><span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unit-test"><span class="toc-text">单元测试</span></a></li></ol>
+    </div>
+  </div>
+
+  <script src="/js/catalog.js"></script>
+
+
+
+    
+      <div class="comments-container">
+        
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://nearwmy.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+<script src="/js/backtotop.js"></script>
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

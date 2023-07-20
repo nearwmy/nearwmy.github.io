@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content>
+  <meta name="author" content="nearwmy">
+  <meta name="description" content="A blog about font-end and life">
+  
+  
+  <title>
+    
+      js 如何准确的获取文件的类型 
+      
+      
+      |
+    
+     I&#39;m near
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  <script src="/js/fancybox.js"></script>
+
+  
+
+</head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+<script src="/js/activeNav.js"></script>
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">js 如何准确的获取文件的类型</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="Update time"></i>
+          2022-03-30 00:54:58
+        </span>
+        
+              <span class="post-categories">
+                <i class="iconfont icon-bookmark" title="Categories"></i>
+                
+                <span class="span--category">
+                  <a href="/categories/fontend/" title="fontend">
+                    <b>#</b> fontend
+                  </a>
+                </span>
+                
+              </span>
+          
+              <span class="post-tags">
+                <i class="iconfont icon-tags" title="Tags"></i>
+                
+                <span class="span--tag">
+                  <a href="/tags/js/" title="js">
+                    <b>#</b> js
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h3><p>前端的小伙伴们应该很熟悉上传或者导入的场景，我也是最近在做一个导入文件的需求时，想通过前端准确的限制导入文件的类型，所以这里就延展出来一个需求：前端能怎样准确的获取文件的类型?</p>
+<h3 id="常见方法"><a href="#常见方法" class="headerlink" title="常见方法"></a>常见方法</h3><p>先说说针对选择文件常见的前端处理有哪些：</p>
+<h4 id="1-通过-input-file-标签的-accept-的属性来限制选择文件的默认类型"><a href="#1-通过-input-file-标签的-accept-的属性来限制选择文件的默认类型" class="headerlink" title="1.通过 input file 标签的 accept 的属性来限制选择文件的默认类型"></a>1.通过 input file 标签的 accept 的属性来限制选择文件的默认类型</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input type=<span class="string">"file"</span> accept=<span class="string">"image/*"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>这个操作其实很简单，但是在实际操作中你会发现，在选择文件时，这个文件类型其实是可以切换为所有文件的，所以对于文件的限制，其实并没有起到太大作用。</p>
+<h4 id="2-通过获取-File-对象的-type-字段来获取文件类型"><a href="#2-通过获取-File-对象的-type-字段来获取文件类型" class="headerlink" title="2.通过获取 File 对象的 type 字段来获取文件类型"></a>2.通过获取 File 对象的 type 字段来获取文件类型</h4><p>这里的 type 字段，是个只读字段。返回文件的 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types" target="_blank" rel="noopener">多用途互联网邮件扩展类型（MIME Type）</a></p>
+<p>看看 File.type 的定义：</p>
+<blockquote>
+<p>字符串，包含媒体类型（MIME），表示文本是什么类型，例如 PNG 图像是 “image/png”。  </p>
+</blockquote>
+<p>但是这个属性并不是获取的文件的真正类型： </p>
+<blockquote>
+<p>注： 基于当前的实现，浏览器不会实际读取文件的字节流，来判断它的媒体类型。它基于文件扩展来假设；重命名为 .txt 的 PNG 图像文件为 “text/plain” 而不是 “image/png” 。而且，file.type 仅仅对常见文件类型可靠。例如图像、文档、音频和视频。不常见的文件扩展名会返回空字符串。开发者最好不要依靠这个属性，作为唯一的验证方案。</p>
+</blockquote>
+<p>这里说的问题在应用中我就遇到过，比如比较常见的 .md， .opml 就没有 type 字段，通过 type 字段判断所有类型是不靠谱的，如果只是一些常见的图像类型还是可以的。</p>
+<p>另外，type 字段的兼容性问题：</p>
+<p><img src="/images/fileType.png" alt="fileType"></p>
+<h4 id="3-获取文件名的后缀"><a href="#3-获取文件名的后缀" class="headerlink" title="3.获取文件名的后缀"></a>3.获取文件名的后缀</h4><p>这个方式也比较普遍，通过剪切获取后缀名来判断文件类型，这个其实更不靠谱，因为文件名是可以修改的。</p>
+<p>总结以上的获取文件类型的方法，优点是简单快捷，缺点就是都不能百分之百保证能准确的获取到文件的真实类型。</p>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法?"></a>其他方法?</h3><p>想到如何获取文件的类型，其实就想每个文件在电脑里面又是怎么区分的了，既然他们能区分，那肯定就有获取类型的方法。另外一个就是文件如果要存储文件类型的话，他能存在哪里，文件一般都是裸奔，估计只有文件本身里面能存储了吧，类比图片信息。所以这里还有一种获取文件类型的方式，就是解读文件信息，一般文件头部字段里面会标识当前文件的类型。</p>
+<h3 id="获取文件签名"><a href="#获取文件签名" class="headerlink" title="获取文件签名"></a>获取文件签名</h3><p>web API 里面的 FileReader 可以读取文件信息，先读取文件的 buffer 类型数据 ，然后通过 DataView 转化为可查看或者操作的对象，根据不同文件类型独一无二的文件签名 file signature，然后根据 <a href="https://en.wikipedia.org/wiki/List_of_file_signatures" target="_blank" rel="noopener">List of file signatures</a> 或者 <a href="http://filesignatures.net/index.php?page=all" target="_blank" rel="noopener">filesignatures</a> 确定文件类型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">fileDom.addEventListener(<span class="string">'change'</span>, (event) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> file = event.target.files[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">const</span> fileReader = <span class="keyword">new</span> FileReader();</span><br><span class="line">    fileReader.onload = <span class="function">(<span class="params">event</span>) =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">const</span> view = <span class="keyword">new</span> <span class="built_in">DataView</span>(event.target.result);</span><br><span class="line">       handleFileType(view);</span><br><span class="line">    &#125;</span><br><span class="line">    fileReader.readAsArrayBuffer(file);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> handleFileType = <span class="function">(<span class="params">view</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> first4Bytes = view.getUint32(<span class="number">0</span>, <span class="literal">false</span>); </span><br><span class="line">  <span class="keyword">let</span> first4BytesHex = <span class="built_in">Number</span>(first4Bytes).toString(<span class="number">16</span>).toUpperCase(); <span class="comment">// 文件签名的16进制 eg： png -&gt; 89504E47</span></span><br><span class="line">  <span class="comment">// <span class="doctag">TODO:</span> 根据文件签名白名单获取具体的文件类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ol>
+<li>这里可以使用 Typed Array 或者 DataView 将 ArrayBuffer 转化成可以查看、操作的对象，为啥不用 Typed Array，是因为不同平台存在不同的字节序的问题，具体可查看： <a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Endianness" target="_blank" rel="noopener">字节序</a></li>
+<li>此方法其实也并不是特别完美，并且使用此方法需要读取文件。</li>
+</ol>
+<h3 id="还是不行？"><a href="#还是不行？" class="headerlink" title="还是不行？"></a>还是不行？</h3><p>通过上面的方法貌似可以确定文件类型，但是实际经验告诉我并没有，发现文件签名里面的类型没有 html， md， csv， txt， 这种。这里就需要搞清楚为啥没有这些文件类型？</p>
+<p>这里就要说到文件类型的表示方法，有上面 accept 或者 type 字段的格式，也就是 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types#%E8%AF%AD%E6%B3%95" target="_blank" rel="noopener">MIME 类型</a>, 格式就是 <code>type/subtype</code>。还有 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types#%E5%85%B6%E4%BB%96%E4%BC%A0%E9%80%81%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95" target="_blank" rel="noopener">其他传送文件类型</a> 的方法，就是：</p>
+<blockquote>
+<p>MIME 类型不是传达文档类型信息的唯一方式：<br>有时会使用名称后缀，特别是在 Microsoft Windows 系统上。并非所有的操作系统都认为这些后缀是有意义的（特别是 Linux 和 Mac OS），并且像外部 MIME 类型一样，不能保证它们是正确的。<br>魔术数字。不同类型的文件的语法通过查看结构来允许文件类型推断。例如，每个 GIF 文件以 47 49 46 38 十六进制值 [GIF89] 或 89 50 4E 47 [.PNG] 的 PNG 文件开头。并非所有类型的文件都有幻数，所以这也不是 100％可靠的方式。</p>
+</blockquote>
+<p>上面提到的文件签名的方法应该是 <strong>魔术数字</strong> 。但是不是所有类型的文件都有幻数。那为什么有些文件没有幻数呢，因为文件其实分两种大类：文本文件和二进制文件。基于二进制格式的文件就会有幻数，但是基于文本的就没有，而 html csv txt 这种就都属于基于文本格式的文件类型。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>从以上信息可以看出，其实每个方法都不算太完美的解决此问题，所以针对获取文件类型的判断可以分场景结合多种方法来判断，先是 file.type 字段或者文件后缀名，如果有值可以根据此判断，如果值为空则继续通过读取文件签名的方式判断。并且在读取大文件的时候，要优化好用户体验。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/01/25/DOM-to-Image-的原理解析/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="Update time"></i>
+              2022-03-30 00:54:58
+            </span>
+            
+                  <span class="post-categories">
+                    <i class="iconfont icon-bookmark" title="Categories"></i>
+                    
+                    <span class="span--category">
+                      <a href="/categories/fontend/" title="fontend">
+                        <b>#</b> fontend
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags" title="Tags"></i>
+                    
+                    <span class="span--tag">
+                      <a href="/tags/js/" title="js">
+                        <b>#</b> js
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/03/30/文件导入为什么会出现乱码/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#背景描述"><span class="toc-text">背景描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常见方法"><span class="toc-text">常见方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-通过-input-file-标签的-accept-的属性来限制选择文件的默认类型"><span class="toc-text">1.通过 input file 标签的 accept 的属性来限制选择文件的默认类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-通过获取-File-对象的-type-字段来获取文件类型"><span class="toc-text">2.通过获取 File 对象的 type 字段来获取文件类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-获取文件名的后缀"><span class="toc-text">3.获取文件名的后缀</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他方法"><span class="toc-text">其他方法?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取文件签名"><span class="toc-text">获取文件签名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#还是不行？"><span class="toc-text">还是不行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </div>
+
+  <script src="/js/catalog.js"></script>
+
+
+
+    
+      <div class="comments-container">
+        
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://nearwmy.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+<script src="/js/backtotop.js"></script>
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>
